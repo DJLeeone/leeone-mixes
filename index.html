@@ -1,74 +1,71 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDROuG4TB23LeD5AKBGtnkYPHnHqXGuGuo",
-            authDomain: "leeone-e0087.firebaseapp.com",
-            projectId: "leeone-e0087",
-            storageBucket: "leeone-e0087.firebasestorage.app",
-            messagingSenderId: "375662424571",
-            appId: "1:375662424571:web:a6132af8b4056d9907db5e",
-            measurementId: "G-KG2SDPQZYJ"
-        };
+  const firebaseConfig = {
+    apiKey: "AlzaSyDROuG4TB23LeD5AKBGtnkYPHnHqXGuGuo",
+    authDomain: "leeone-e0087.firebaseapp.com",
+    projectId: "leeone-e0087",
+    storageBucket: "leeone-e0087.firebasestorage.app",
+    messagingSenderId: "375662424571",
+    appId: "1:375662424571:web:a6132af8b4056d9907db5e",
+    measurementId: "G-KG2SDPQZYJ"
+  };
 
-        // Initialize Firebase services correctly
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const storage = getStorage(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const storage = getStorage(app);
 
-        // Security: Monitor login status
-        onAuthStateChanged(auth, (user) => {
-            document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
-            loadMixes();
-        });
+  onAuthStateChanged(auth, (user) => {
+    document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
+    loadMixes();
+  });
 
-        // Triggered by clicking the "LEEONE" name
-        window.showLoginPrompt = async () => {
-            const email = prompt("Owner Email:");
-            const pass = prompt("Password:");
-            if (email && pass) {
-                try { 
-                    await signInWithEmailAndPassword(auth, email, pass); 
-                } catch(e) { 
-                    alert("Access Denied: Check credentials in Firebase Console."); 
-                }
-            }
-        };
+  window.showLoginPrompt = async () => {
+    const email = prompt("Owner Email:");
+    const pass = prompt("Password:");
+    if (email && pass) {
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch (e) {
+        alert("Login failed. Check Firebase Authentication.");
+      }
+    }
+  };
 
-        window.logout = () => signOut(auth);
+  window.logout = () => signOut(auth);
 
-        window.uploadMix = async () => {
-            const file = document.getElementById('fileItem').files[0];
-            if(!file) return alert("Select a file first");
-            
-            const storageRef = ref(storage, 'mixes/' + file.name);
-            try {
-                await uploadBytes(storageRef, file);
-                alert("Mix uploaded successfully!");
-                loadMixes();
-            } catch(e) {
-                alert("Upload failed. Ensure Storage rules allow writes for authenticated users.");
-            }
-        };
+  window.uploadMix = async () => {
+    const file = document.getElementById('fileItem').files[0];
+    if(!file) return alert("Select a file first");
+    const storageRef = ref(storage, 'mixes/' + file.name);
+    try {
+      await uploadBytes(storageRef, file);
+      alert("Mix uploaded successfully!");
+      loadMixes();
+    } catch(e) {
+      alert("Upload failed. Check Storage rules.");
+    }
+  };
 
-        async function loadMixes() {
-            const container = document.getElementById('mix-container');
-            container.innerHTML = "Loading sets...";
-            try {
-                const listRef = ref(storage, 'mixes/');
-                const res = await listAll(listRef);
-                container.innerHTML = "";
-                for (const item of res.items) {
-                    const url = await getDownloadURL(item);
-                    container.innerHTML += `
-                        <div class="mix-card">
-                            <div class="mix-title">${item.name.split('.')[0]}</div>
-                            <audio controls src="${url}"></audio>
-                        </div>
-                    `;
-                }
-            } catch(e) {
-                container.innerHTML = "No mixes found or access denied.";
-            }
-        }
+  async function loadMixes() {
+    const container = document.getElementById('mix-container');
+    container.innerHTML = "Loading sets...";
+    try {
+      const listRef = ref(storage, 'mixes/');
+      const res = await listAll(listRef);
+      container.innerHTML = "";
+      for (const item of res.items) {
+        const url = await getDownloadURL(item);
+        container.innerHTML += `
+          <div class="mix-card">
+            <p>${item.name.split('.')[0]}</p>
+            <audio controls src="${url}"></audio>
+          </div>`;
+      }
+    } catch(e) {
+      container.innerHTML = "No mixes found or access denied.";
+    }
+  }
+</script>
