@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEEONE | Official Mixes</title>
+    <style>
+        :root { 
+            --gold: #d4af37; 
+            --glass: rgba(18, 18, 18, 0.85);
+            --text: #ffffff; 
+        }
+
+        body { 
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            /* BACKGROUND IMAGE SETTINGS */
+            background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=2000'); 
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Dark Overlay to make image more subtle */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Adjust this to make image darker/lighter */
+            z-index: -1;
+        }
+
+        h1 { 
+            color: var(--gold); 
+            letter-spacing: 12px; 
+            margin-top: 60px;
+            font-size: 3.5rem;
+            font-weight: 200;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .tagline {
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        
+        #admin-panel { 
+            display: none; 
+            background: var(--glass); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 30px; 
+            border: 1px dashed var(--gold); 
+            backdrop-filter: blur(10px);
+        }
+        
+        .mix-list { 
+            width: 90%; 
+            max-width: 600px; 
+            margin-bottom: 50px;
+        }
+
+        .mix-item { 
+            background: var(--glass); 
+            margin-bottom: 20px; 
+            padding: 30px; 
+            border-radius: 4px; 
+            border-left: 3px solid var(--gold); 
+            display: flex; 
+            flex-direction: column;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .mix-name { 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+
+        audio { 
+            width: 100%; 
+            filter: invert(1) brightness(1.2); 
+        }
+        
+        .admin-trigger { 
+            position: fixed; bottom: 10px; right: 10px; opacity: 0.05; cursor: pointer; color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LEEONE</h1>
+    <div class="tagline">Yerevan 🦁 Melodic & Deep</div>
+
+    <div id="admin-panel">
+        <input type="file" id="fileItem" accept="audio/*">
+        <button onclick="uploadMix()">Upload New Mix</button>
+        <p id="status"></p>
+    </div>
+
+    <div class="mix-list" id="mix-container">
+        <p>Curating your experience...</p>
+    </div>
+
+    <div class="admin-trigger" onclick="showAdmin()">.</div>
+
+    <script type="module">
+        // [PASTE YOUR FIREBASE CODE FROM PREVIOUS STEP HERE]
+    </script>
+</body>
+</html>
