@@ -3,104 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEEONE | CLUB WALL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Inter:wght@900&display=swap" rel="stylesheet">
+    <title>LEEONE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon: #00d4ff;
-            --glow: rgba(0, 212, 255, 0.6);
-        }
-
         body {
-            margin: 0; padding: 0; background: #050505;
-            /* Dark Concrete Wall Texture */
-            background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png'), 
-                              linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-                              url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000');
-            background-size: cover; background-position: center;
-            color: white; font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0; padding: 0; background: #050505; color: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Club Spotlight Effects */
-        .spotlight {
-            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 20%);
-            z-index: 1; pointer-events: none; animation: moveLight 8s infinite alternate;
-        }
-
-        @keyframes moveLight {
-            0% { transform: translate(-10%, -10%); }
-            100% { transform: translate(10%, 10%); }
-        }
-
-        .header-section { 
-            position: relative; z-index: 2; text-align: center; margin-top: 100px; 
-        }
-
-        /* Neon Wall Text */
+        /* The "Wall" Text - Stamped/Etched Look */
         h1 {
-            font-family: 'Monoton', cursive; font-size: clamp(3rem, 10vw, 6rem);
-            color: var(--neon); margin: 0; letter-spacing: 10px;
-            text-shadow: 0 0 5px #fff, 0 0 10px var(--neon), 0 0 20px var(--neon), 0 0 40px var(--neon);
-            opacity: 0.9; transform: perspective(500px) rotateX(10deg);
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(80px, 15vw, 150px);
+            margin: 60px 0 10px 0;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            color: #111; /* Darker than the background */
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.1), -1px -1px 1px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: color 0.3s ease;
         }
 
-        .lion-headphones {
-            width: 120px; margin-top: 20px; 
-            filter: drop-shadow(0 0 15px var(--glow));
-            /* Using a Lion with Headphones specific icon */
-            content: url('https://img.icons8.com/external-flatart-icons-outline-flatarticons/100/00d4ff/external-lion-animals-flatart-icons-outline-flatarticons.png');
+        h1:hover { color: #fff; }
+
+        /* The Lion Graphic - Minimalist White Line Art */
+        .logo-container { width: 180px; height: 180px; margin-bottom: 40px; opacity: 0.9; }
+
+        /* The Set List */
+        .set-list { width: 90%; max-width: 700px; margin-bottom: 100px; }
+
+        .set-item {
+            border-top: 1px solid #222; padding: 30px 0;
+            display: flex; flex-direction: column; gap: 15px;
         }
 
-        /* Mix Container */
-        .mix-list { 
-            position: relative; z-index: 2; width: 90%; max-width: 500px; 
-            margin-top: 50px; padding-bottom: 150px; 
+        .set-title {
+            font-size: 12px; font-weight: bold; letter-spacing: 3px;
+            text-transform: uppercase; color: #666;
         }
 
-        .mix-item {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 212, 255, 0.1);
-            backdrop-filter: blur(10px); padding: 20px; margin-bottom: 15px;
-            border-radius: 4px; transition: 0.3s;
+        audio { width: 100%; filter: invert(1); height: 35px; opacity: 0.7; }
+        audio:hover { opacity: 1; }
+
+        /* Secure Admin Panel - Stark White (The Only Color) */
+        #admin-panel {
+            display: none; position: fixed; bottom: 0; width: 100%;
+            background: #fff; color: #000; padding: 50px; text-align: center;
+            z-index: 1000; box-sizing: border-box;
         }
 
-        .mix-item:hover { border-color: var(--neon); background: rgba(0, 212, 255, 0.05); }
-
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg); height: 35px; margin-top: 10px; }
-
-        /* Hidden Admin */
-        #admin-panel { 
-            display: none; position: fixed; bottom: 0; width: 100%; 
-            background: rgba(0,0,0,0.95); padding: 25px; border-top: 2px solid var(--neon); 
-            z-index: 100; text-align: center;
+        .admin-btn {
+            background: #000; color: #fff; border: none;
+            padding: 15px 40px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-    <div class="spotlight"></div>
+    <h1 onclick="showLoginPrompt()">LEEONE</h1>
 
-    <div class="header-section">
-        <h1 id="title" onclick="showLoginPrompt()">LEEONE</h1>
-        <div class="lion-headphones"></div>
+    <div class="logo-container">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10C30 10 15 25 15 45V55C15 57 17 59 19 59H25V40C25 35 35 30 50 30C65 30 75 35 75 40V59H81C83 59 85 57 85 55V45C85 25 70 10 50 10Z" stroke="white" stroke-width="2"/>
+            <path d="M35 45L25 65M65 45L75 65M30 85L40 65H60L70 85M45 75H55" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="35" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+        </svg>
     </div>
 
-    <div class="mix-list" id="mix-container">
+    <div class="set-list" id="mix-container">
         </div>
 
     <div id="admin-panel">
-        <input type="file" id="fileItem" accept="audio/mpeg" style="color:white; margin-bottom:10px;">
+        <p style="font-weight: bold; margin-bottom: 20px;">SYSTEM ACCESS: UPLOAD MODE</p>
+        <input type="file" id="fileItem" style="margin-bottom: 20px;">
         <br>
-        <button onclick="uploadMix()" style="background:var(--neon); color:black; font-weight:bold; border:none; padding:10px 20px; cursor:pointer;">UPLOAD NEW MIX</button>
-        <button onclick="logout()" style="background:red; color:white; border:none; padding:10px; margin-left:10px;">LOGOUT</button>
-        <p id="status" style="color:var(--neon)"></p>
+        <button class="admin-btn" onclick="uploadMix()">Confirm Upload</button>
+        <button onclick="logout()" style="background:none; border:none; text-decoration:underline; margin-left:20px; cursor:pointer;">Exit</button>
     </div>
 
-    <script type="module">
-        // --- ADD YOUR FIREBASE CONFIG CODE HERE FROM THE PREVIOUS STEP ---
-        // (Include the imports for Auth, Storage, etc.)
-    </script>
 </body>
 </html>
