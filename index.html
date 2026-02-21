@@ -8,87 +8,125 @@
     <style>
         body {
             margin: 0; padding: 0;
-            background: #000 url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=2000') no-repeat center center fixed;
-            background-size: cover;
+            background: #000; /* Pure black background */
             color: white; font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll from lights */
         }
 
-        /* Overlay to darken background for better visibility */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); z-index: 0;
+        /* Dynamic Blue/Purple Laser Lights */
+        .laser-light {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--x) var(--y), rgba(0, 212, 255, 0.4) 0%, rgba(100, 0, 255, 0.4) 30%, transparent 70%);
+            mix-blend-mode: screen; /* Blends lights beautifully */
+            animation: moveLights 15s infinite alternate ease-in-out;
+            opacity: 0.7; z-index: 0;
+            pointer-events: none; /* Allows clicks underneath */
         }
 
-        .content { position: relative; z-index: 1; width: 90%; max-width: 600px; text-align: center; padding-top: 50px; }
+        @keyframes moveLights {
+            0% { --x: 0%; --y: 0%; }
+            25% { --x: 100%; --y: 25%; }
+            50% { --x: 0%; --y: 50%; }
+            75% { --x: 100%; --y: 75%; }
+            100% { --x: 0%; --y: 100%; }
+        }
 
-        /* Cyan Glow Name - Identical to Image */
+        .content { position: relative; z-index: 1; width: 90%; max-width: 700px; text-align: center; padding-top: 50px; }
+
+        /* Brighter Cyan Glow Name */
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 70px; font-style: italic; margin: 0;
-            color: #00d4ff;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.9), 0 0 30px rgba(0, 212, 255, 0.5);
+            font-size: 85px; font-style: italic; margin: 0;
+            color: #00eaff; /* Brighter Cyan */
+            text-shadow: 0 0 20px rgba(0, 234, 255, 1), 0 0 40px rgba(0, 234, 255, 0.7);
             text-transform: uppercase; cursor: pointer;
+            transition: 0.2s;
         }
+        h1:hover { transform: scale(1.02); }
 
-        /* Custom Lion with Headphones Icon */
-        .lion-icon {
-            width: 120px; height: 120px; margin: 20px auto;
-            background: url('https://cdn-icons-png.flaticon.com/512/614/614613.png') no-repeat center;
-            background-size: contain;
-            filter: drop-shadow(0 0 8px #00d4ff) invert(1) hue-rotate(180deg);
+        /* Lion inside Headphones Icon - Custom SVG */
+        .lion-headphones-logo {
+            width: 160px; height: 160px; margin: 30px auto;
+            position: relative;
+            filter: drop-shadow(0 0 12px rgba(0, 234, 255, 0.8));
+            opacity: 0.9;
         }
+        
+        .lion-headphones-logo svg {
+            width: 100%; height: 100%;
+        }
+        .lion-headphones-logo .headband, .lion-headphones-logo .earcup { fill: #00eaff; } /* Headphones bright cyan */
+        .lion-headphones-logo .lion-fill { fill: #FFF; } /* Lion white */
 
-        /* Glassmorphism Mix List */
-        .mix-list { margin-top: 40px; }
+
+        /* Glassmorphism Mix List - Same as before, very effective */
+        .mix-list { margin-top: 50px; }
 
         .mix-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-left: 4px solid #00d4ff;
-            border-radius: 8px;
-            padding: 20px; margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.08); /* Slightly brighter glass */
+            backdrop-filter: blur(15px); /* Stronger blur */
+            border-left: 5px solid #00eaff; /* Brighter border */
+            border-radius: 10px;
+            padding: 25px; margin-bottom: 20px;
             text-align: left; transition: 0.3s;
         }
+        .mix-card:hover { background: rgba(0, 234, 255, 0.15); transform: translateY(-3px); }
 
-        .mix-card:hover { background: rgba(0, 212, 255, 0.1); }
+        .mix-title { font-size: 15px; font-weight: bold; color: #00eaff; text-transform: uppercase; margin-bottom: 12px; }
 
-        .mix-title { font-size: 14px; font-weight: bold; color: #00d4ff; text-transform: uppercase; margin-bottom: 10px; }
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg) brightness(1.5); height: 35px; }
 
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg); height: 35px; }
-
-        /* Hidden Owner Panel - Stark White contrast */
+        /* Owner Panel */
         #admin-panel {
             display: none; position: fixed; bottom: 0; width: 100%;
-            background: rgba(0, 0, 0, 0.95); border-top: 3px solid #00d4ff;
-            padding: 40px; text-align: center; z-index: 1000;
+            background: rgba(0, 0, 0, 0.98); border-top: 3px solid #00eaff;
+            padding: 50px; text-align: center; z-index: 1000;
         }
 
         .upload-btn {
-            background: #00d4ff; color: #000; border: none; padding: 15px 30px;
-            font-weight: bold; cursor: pointer; border-radius: 4px;
+            background: #00eaff; color: #000; border: none; padding: 18px 35px;
+            font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px;
         }
+        .upload-btn:hover { background: #fff; }
     </style>
 </head>
 <body>
 
+    <div class="laser-light"></div>
+
     <div class="content">
         <h1 onclick="showLoginPrompt()">LEEONE</h1>
         
-        <div class="lion-icon"></div>
+        <div class="lion-headphones-logo">
+            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="headband" d="M100 10 C60 10 20 40 20 80 V100 H30 V80 C30 50 60 30 100 30 C140 30 170 50 170 80 V100 H180 V80 C180 40 140 10 100 10Z" stroke-width="0"/>
+                <circle class="earcup" cx="30" cy="110" r="20"/>
+                <circle class="earcup" cx="170" cy="110" r="20"/>
+
+                <g class="lion-fill">
+                    <path d="M100 65 C80 65 60 80 60 100 C60 120 80 135 100 135 C120 135 140 120 140 100 C140 80 120 65 100 65 Z"/>
+                    <path d="M75 90 C70 95 70 105 75 110 L85 100 Z"/>
+                    <path d="M125 90 C130 95 130 105 125 110 L115 100 Z"/>
+                    <circle cx="90" cy="95" r="5"/>
+                    <circle cx="110" cy="95" r="5"/>
+                    <path d="M90 115 C95 120 105 120 110 115 L100 110 Z" />
+                </g>
+            </svg>
+        </div>
 
         <div class="mix-list" id="mix-container">
             </div>
     </div>
 
     <div id="admin-panel">
-        <h3 style="color:#00d4ff">OWNER SYSTEM ACCESS</h3>
-        <input type="file" id="fileItem" accept="audio/mpeg" style="margin-bottom: 20px; color: white;">
+        <h3 style="color:#00eaff; margin-bottom: 25px;">OWNER SYSTEM ACCESS</h3>
+        <input type="file" id="fileItem" accept="audio/mpeg" style="margin-bottom: 25px; color: white; background: rgba(255,255,255,0.1); border: 1px solid #00eaff; padding: 10px; width: 80%;">
         <br>
         <button class="upload-btn" onclick="uploadMix()">PUSH MIX LIVE</button>
-        <button onclick="logout()" style="background:none; color:gray; border:none; margin-top:20px; cursor:pointer;">Logout</button>
-        <p id="status" style="color:#00d4ff"></p>
+        <button onclick="logout()" style="background:none; color:gray; border:none; margin-top:25px; cursor:pointer; font-size: 16px;">Logout</button>
+        <p id="status" style="color:#00eaff; margin-top: 20px;"></p>
     </div>
 
     <script type="module">
@@ -96,7 +134,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        // PASTE YOUR KEYS FROM PHOTO #3 HERE
+        // --- Your Firebase Config (already pasted in from previous steps) ---
         const firebaseConfig = {
             apiKey: "AIzaSyDR0uG4TB23Le05AKBGtnkYPhnHqXGuGuo",
             authDomain: "leeone-e0087.firebaseapp.com",
@@ -143,11 +181,18 @@
             const listRef = ref(storage, 'mixes/');
             const res = await listAll(listRef);
             
-            for (const item of res.items) {
-                const url = await getDownloadURL(item);
+            // Sort by creation time (newest first)
+            const itemsWithMetadata = await Promise.all(res.items.map(async itemRef => {
+                const metadata = await itemRef.getMetadata();
+                return { ref: itemRef, metadata: metadata };
+            }));
+            itemsWithMetadata.sort((a, b) => b.metadata.timeCreated.localeCompare(a.metadata.timeCreated));
+
+            for (const item of itemsWithMetadata) {
+                const url = await getDownloadURL(item.ref);
                 container.innerHTML += `
                     <div class="mix-card">
-                        <div class="mix-title">${item.name.replace('.mp3', '')}</div>
+                        <div class="mix-title">${item.ref.name.replace('.mp3', '').replace(/_/g, ' ')}</div>
                         <audio controls src="${url}"></audio>
                     </div>
                 `;
