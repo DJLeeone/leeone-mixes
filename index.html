@@ -4,84 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEEONE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0; padding: 0; background: #050505; color: #fff;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0;
+            background: #000 url('https://images.unsplash.com/photo-1514525253361-bee8a18744ad?q=80&w=2000') no-repeat center center fixed;
+            background-size: cover;
+            color: white; font-family: 'Segoe UI', sans-serif;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* The "Wall" Text - Stamped/Etched Look */
+        /* The Cyan Glow Title */
         h1 {
-            font-family: 'Anton', sans-serif;
-            font-size: clamp(80px, 15vw, 150px);
-            margin: 60px 0 10px 0;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            color: #111; /* Darker than the background */
-            text-shadow: 1px 1px 1px rgba(255,255,255,0.1), -1px -1px 1px rgba(0,0,0,0.5);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 80px; font-style: italic; margin: 40px 0 10px 0;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
             cursor: pointer;
-            transition: color 0.3s ease;
         }
 
-        h1:hover { color: #fff; }
-
-        /* The Lion Graphic - Minimalist White Line Art */
-        .logo-container { width: 180px; height: 180px; margin-bottom: 40px; opacity: 0.9; }
-
-        /* The Set List */
-        .set-list { width: 90%; max-width: 700px; margin-bottom: 100px; }
-
-        .set-item {
-            border-top: 1px solid #222; padding: 30px 0;
-            display: flex; flex-direction: column; gap: 15px;
+        /* The Lion Icon */
+        .lion-icon {
+            width: 100px; height: 100px; margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px #00d4ff);
         }
 
-        .set-title {
-            font-size: 12px; font-weight: bold; letter-spacing: 3px;
-            text-transform: uppercase; color: #666;
+        /* The "Glass" Mix List */
+        .mix-container { width: 90%; max-width: 600px; margin-top: 20px; }
+
+        .mix-card {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid #00d4ff;
+            padding: 20px; margin-bottom: 15px;
+            border-radius: 8px; display: flex; flex-direction: column;
         }
 
-        audio { width: 100%; filter: invert(1); height: 35px; opacity: 0.7; }
-        audio:hover { opacity: 1; }
+        .mix-name { font-weight: bold; font-size: 18px; margin-bottom: 10px; color: #00d4ff; }
 
-        /* Secure Admin Panel - Stark White (The Only Color) */
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg) brightness(1.5); height: 35px; }
+
+        /* Hidden Admin */
         #admin-panel {
             display: none; position: fixed; bottom: 0; width: 100%;
-            background: #fff; color: #000; padding: 50px; text-align: center;
-            z-index: 1000; box-sizing: border-box;
+            background: rgba(0,0,0,0.9); border-top: 2px solid #00d4ff;
+            padding: 30px; text-align: center; z-index: 1000;
         }
 
-        .admin-btn {
-            background: #000; color: #fff; border: none;
-            padding: 15px 40px; font-weight: bold; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
+        button { background: #00d4ff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <h1 onclick="showLoginPrompt()">LEEONE</h1>
 
-    <div class="logo-container">
+    <div class="lion-icon">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 10C30 10 15 25 15 45V55C15 57 17 59 19 59H25V40C25 35 35 30 50 30C65 30 75 35 75 40V59H81C83 59 85 57 85 55V45C85 25 70 10 50 10Z" stroke="white" stroke-width="2"/>
-            <path d="M35 45L25 65M65 45L75 65M30 85L40 65H60L70 85M45 75H55" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="50" cy="50" r="35" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+            <path d="M50 15C35 15 25 25 25 40V55H30V40C30 30 40 25 50 25C60 25 70 30 70 40V55H75V40C75 25 65 15 50 15Z" fill="#00d4ff"/>
+            <path d="M50 35C40 35 32 43 32 53C32 63 40 71 50 71C60 71 68 63 68 53C68 43 60 35 50 35ZM50 65C43 65 38 60 38 53C38 46 43 41 50 41C57 41 62 46 62 53C62 60 57 65 50 65Z" fill="#00d4ff"/>
+            <path d="M45 48H55V52H45V48Z" fill="#00d4ff"/>
         </svg>
     </div>
 
-    <div class="set-list" id="mix-container">
+    <div class="mix-container" id="mix-list">
         </div>
 
     <div id="admin-panel">
-        <p style="font-weight: bold; margin-bottom: 20px;">SYSTEM ACCESS: UPLOAD MODE</p>
-        <input type="file" id="fileItem" style="margin-bottom: 20px;">
-        <br>
-        <button class="admin-btn" onclick="uploadMix()">Confirm Upload</button>
-        <button onclick="logout()" style="background:none; border:none; text-decoration:underline; margin-left:20px; cursor:pointer;">Exit</button>
+        <input type="file" id="fileItem">
+        <button onclick="uploadMix()">UPLOAD NEW MIX</button>
+        <button onclick="logout()" style="background:gray; margin-left:10px;">EXIT</button>
     </div>
 
+    <script type="module">
+        // Paste your Firebase Config and Logic here
+    </script>
 </body>
 </html>
