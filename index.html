@@ -7,126 +7,95 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0; padding: 0;
-            background: #000; /* Pure black background */
-            color: white; font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden; /* Prevent horizontal scroll from lights */
+            margin: 0; padding: 0; background: #000; color: #fff;
+            font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Dynamic Blue/Purple Laser Lights */
-        .laser-light {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--x) var(--y), rgba(0, 212, 255, 0.4) 0%, rgba(100, 0, 255, 0.4) 30%, transparent 70%);
-            mix-blend-mode: screen; /* Blends lights beautifully */
-            animation: moveLights 15s infinite alternate ease-in-out;
-            opacity: 0.7; z-index: 0;
-            pointer-events: none; /* Allows clicks underneath */
+        /* Top Bar Navigation Look */
+        .nav-mock {
+            width: 100%; padding: 20px 50px; display: flex; justify-content: space-between;
+            box-sizing: border-box; font-size: 14px; letter-spacing: 1px; color: #aaa;
         }
 
-        @keyframes moveLights {
-            0% { --x: 0%; --y: 0%; }
-            25% { --x: 100%; --y: 25%; }
-            50% { --x: 0%; --y: 50%; }
-            75% { --x: 100%; --y: 75%; }
-            100% { --x: 0%; --y: 100%; }
-        }
-
-        .content { position: relative; z-index: 1; width: 90%; max-width: 700px; text-align: center; padding-top: 50px; }
-
-        /* Brighter Cyan Glow Name */
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 85px; font-style: italic; margin: 0;
-            color: #00eaff; /* Brighter Cyan */
-            text-shadow: 0 0 20px rgba(0, 234, 255, 1), 0 0 40px rgba(0, 234, 255, 0.7);
+        /* The Main Neon Title - Hollow Style */
+        .main-title {
+            font-family: 'Orbitron', sans-serif; font-size: 100px; font-style: italic;
+            margin: 40px 0 20px 0; color: transparent;
+            -webkit-text-stroke: 2px #00eaff;
+            filter: drop-shadow(0 0 15px rgba(0, 234, 255, 0.8));
             text-transform: uppercase; cursor: pointer;
-            transition: 0.2s;
         }
-        h1:hover { transform: scale(1.02); }
 
-        /* Lion inside Headphones Icon - Custom SVG */
-        .lion-headphones-logo {
-            width: 160px; height: 160px; margin: 30px auto;
-            position: relative;
-            filter: drop-shadow(0 0 12px rgba(0, 234, 255, 0.8));
-            opacity: 0.9;
-        }
+        /* The Logo: Lion + Circular Headphones */
+        .logo-box { width: 300px; height: 150px; position: relative; margin-bottom: 50px; }
         
-        .lion-headphones-logo svg {
-            width: 100%; height: 100%;
+        /* Blue Laser Lines */
+        .lasers {
+            position: absolute; top: 50%; width: 100vw; height: 2px;
+            background: linear-gradient(90deg, transparent, #00eaff, transparent);
+            box-shadow: 0 0 15px #00eaff; z-index: -1;
         }
-        .lion-headphones-logo .headband, .lion-headphones-logo .earcup { fill: #00eaff; } /* Headphones bright cyan */
-        .lion-headphones-logo .lion-fill { fill: #FFF; } /* Lion white */
 
-
-        /* Glassmorphism Mix List - Same as before, very effective */
-        .mix-list { margin-top: 50px; }
-
-        .mix-card {
-            background: rgba(255, 255, 255, 0.08); /* Slightly brighter glass */
-            backdrop-filter: blur(15px); /* Stronger blur */
-            border-left: 5px solid #00eaff; /* Brighter border */
-            border-radius: 10px;
-            padding: 25px; margin-bottom: 20px;
-            text-align: left; transition: 0.3s;
+        /* Mix Grid Layout */
+        .mix-section-title { width: 90%; max-width: 900px; text-align: left; font-size: 24px; margin: 20px 0; font-weight: bold; }
+        
+        .grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            width: 90%; max-width: 900px; margin-bottom: 50px;
         }
-        .mix-card:hover { background: rgba(0, 234, 255, 0.15); transform: translateY(-3px); }
 
-        .mix-title { font-size: 15px; font-weight: bold; color: #00eaff; text-transform: uppercase; margin-bottom: 12px; }
+        .card {
+            background: #111; border-radius: 8px; padding: 20px;
+            border-left: 6px solid #00eaff; display: flex; justify-content: space-between; align-items: center;
+        }
 
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg) brightness(1.5); height: 35px; }
+        .card-info { flex: 1; }
+        .card-title { color: #00eaff; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        .card-sub { font-size: 10px; color: #666; }
 
-        /* Owner Panel */
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg); margin-top: 10px; }
+
+        /* Admin Panel - The "Button" Section */
         #admin-panel {
-            display: none; position: fixed; bottom: 0; width: 100%;
-            background: rgba(0, 0, 0, 0.98); border-top: 3px solid #00eaff;
-            padding: 50px; text-align: center; z-index: 1000;
+            display: none; width: 90%; max-width: 900px; background: #000;
+            border: 2px solid #111; border-top: 4px solid #00eaff;
+            padding: 40px; margin-top: 20px; box-sizing: border-box;
         }
 
-        .upload-btn {
-            background: #00eaff; color: #000; border: none; padding: 18px 35px;
-            font-weight: bold; cursor: pointer; border-radius: 5px; font-size: 16px;
+        .input-line {
+            width: 100%; border: 1px solid #00eaff; background: transparent;
+            padding: 10px; color: white; margin-bottom: 15px; border-radius: 4px;
         }
-        .upload-btn:hover { background: #fff; }
+
+        .action-btn {
+            background: #00eaff; color: #000; border: none; padding: 15px 40px;
+            font-weight: bold; border-radius: 5px; cursor: pointer; text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
-    <div class="laser-light"></div>
-
-    <div class="content">
-        <h1 onclick="showLoginPrompt()">LEEONE</h1>
-        
-        <div class="lion-headphones-logo">
-            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="headband" d="M100 10 C60 10 20 40 20 80 V100 H30 V80 C30 50 60 30 100 30 C140 30 170 50 170 80 V100 H180 V80 C180 40 140 10 100 10Z" stroke-width="0"/>
-                <circle class="earcup" cx="30" cy="110" r="20"/>
-                <circle class="earcup" cx="170" cy="110" r="20"/>
-
-                <g class="lion-fill">
-                    <path d="M100 65 C80 65 60 80 60 100 C60 120 80 135 100 135 C120 135 140 120 140 100 C140 80 120 65 100 65 Z"/>
-                    <path d="M75 90 C70 95 70 105 75 110 L85 100 Z"/>
-                    <path d="M125 90 C130 95 130 105 125 110 L115 100 Z"/>
-                    <circle cx="90" cy="95" r="5"/>
-                    <circle cx="110" cy="95" r="5"/>
-                    <path d="M90 115 C95 120 105 120 110 115 L100 110 Z" />
-                </g>
-            </svg>
-        </div>
-
-        <div class="mix-list" id="mix-container">
-            </div>
+    <div class="nav-mock">
+        <span style="color:#00eaff; font-weight:bold;">LEEONE</span>
+        <div><span>Htm &nbsp;&nbsp; Inber &nbsp;&nbsp; Inter &nbsp;&nbsp; Coner</span></div>
     </div>
 
+    <h1 class="main-title" onclick="showLoginPrompt()">LEEONE</h1>
+
+    <div class="logo-box">
+        <div class="lasers"></div>
+        <img src="https://i.ibb.co/3ykpXfH/lion-headset.png" style="width:100%; height:100%; object-fit:contain; filter: drop-shadow(0 0 10px #00eaff);">
+        </div>
+
+    <div class="mix-section-title">Mix-List</div>
+    <div class="grid" id="mix-container">
+        </div>
+
     <div id="admin-panel">
-        <h3 style="color:#00eaff; margin-bottom: 25px;">OWNER SYSTEM ACCESS</h3>
-        <input type="file" id="fileItem" accept="audio/mpeg" style="margin-bottom: 25px; color: white; background: rgba(255,255,255,0.1); border: 1px solid #00eaff; padding: 10px; width: 80%;">
-        <br>
-        <button class="upload-btn" onclick="uploadMix()">PUSH MIX LIVE</button>
-        <button onclick="logout()" style="background:none; color:gray; border:none; margin-top:25px; cursor:pointer; font-size: 16px;">Logout</button>
-        <p id="status" style="color:#00eaff; margin-top: 20px;"></p>
+        <h2 style="margin-top:0">#Admin-Panel</h2>
+        <input type="file" id="fileItem" class="input-line">
+        <button class="action-btn" onclick="uploadMix()">button</button>
+        <button onclick="logout()" style="color:gray; background:none; border:none; margin-left:10px; cursor:pointer;">logout</button>
     </div>
 
     <script type="module">
@@ -134,7 +103,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        // --- Your Firebase Config (already pasted in from previous steps) ---
+        // Your real keys from your photo
         const firebaseConfig = {
             apiKey: "AIzaSyDR0uG4TB23Le05AKBGtnkYPhnHqXGuGuo",
             authDomain: "leeone-e0087.firebaseapp.com",
@@ -148,17 +117,15 @@
         const auth = getAuth(app);
         const storage = getStorage(app);
 
-        // Security: Show/Hide the upload panel based on Login
         onAuthStateChanged(auth, (user) => {
             document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
             loadMixes();
         });
 
         window.showLoginPrompt = async () => {
-            const email = prompt("Owner Email:");
+            const email = prompt("Email:");
             const pass = prompt("Password:");
-            try { await signInWithEmailAndPassword(auth, email, pass); } 
-            catch (e) { alert("Access Denied."); }
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch(e) { alert("Denied"); }
         };
 
         window.logout = () => signOut(auth);
@@ -166,12 +133,8 @@
         async function uploadMix() {
             const file = document.getElementById('fileItem').files[0];
             if(!file) return;
-            const status = document.getElementById('status');
-            status.innerText = "Uploading to warehouse...";
-            
             const storageRef = ref(storage, 'mixes/' + file.name);
             await uploadBytes(storageRef, file);
-            status.innerText = "Mix Live!";
             loadMixes();
         }
 
@@ -180,20 +143,15 @@
             container.innerHTML = "";
             const listRef = ref(storage, 'mixes/');
             const res = await listAll(listRef);
-            
-            // Sort by creation time (newest first)
-            const itemsWithMetadata = await Promise.all(res.items.map(async itemRef => {
-                const metadata = await itemRef.getMetadata();
-                return { ref: itemRef, metadata: metadata };
-            }));
-            itemsWithMetadata.sort((a, b) => b.metadata.timeCreated.localeCompare(a.metadata.timeCreated));
-
-            for (const item of itemsWithMetadata) {
-                const url = await getDownloadURL(item.ref);
+            for (const item of res.items) {
+                const url = await getDownloadURL(item);
                 container.innerHTML += `
-                    <div class="mix-card">
-                        <div class="mix-title">${item.ref.name.replace('.mp3', '').replace(/_/g, ' ')}</div>
-                        <audio controls src="${url}"></audio>
+                    <div class="card">
+                        <div class="card-info">
+                            <div class="card-title">${item.name.split('.')[0]}</div>
+                            <div class="card-sub">FIREBASE STORAGE / AUDIO SOURCE</div>
+                            <audio controls src="${url}"></audio>
+                        </div>
                     </div>
                 `;
             }
