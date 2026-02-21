@@ -8,75 +8,151 @@
     <style>
         body {
             margin: 0; padding: 0;
-            background: #000 url('https://images.unsplash.com/photo-1514525253361-bee8a18744ad?q=80&w=2000') no-repeat center center fixed;
+            background: #000 url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=2000') no-repeat center center fixed;
             background-size: cover;
-            color: white; font-family: 'Segoe UI', sans-serif;
+            color: white; font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
         }
 
-        /* The Cyan Glow Title */
+        /* Overlay to darken background for better visibility */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: 0;
+        }
+
+        .content { position: relative; z-index: 1; width: 90%; max-width: 600px; text-align: center; padding-top: 50px; }
+
+        /* Cyan Glow Name - Identical to Image */
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 80px; font-style: italic; margin: 40px 0 10px 0;
+            font-size: 70px; font-style: italic; margin: 0;
             color: #00d4ff;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
-            cursor: pointer;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.9), 0 0 30px rgba(0, 212, 255, 0.5);
+            text-transform: uppercase; cursor: pointer;
         }
 
-        /* The Lion Icon */
+        /* Custom Lion with Headphones Icon */
         .lion-icon {
-            width: 100px; height: 100px; margin-bottom: 30px;
-            filter: drop-shadow(0 0 10px #00d4ff);
+            width: 120px; height: 120px; margin: 20px auto;
+            background: url('https://cdn-icons-png.flaticon.com/512/614/614613.png') no-repeat center;
+            background-size: contain;
+            filter: drop-shadow(0 0 8px #00d4ff) invert(1) hue-rotate(180deg);
         }
 
-        /* The "Glass" Mix List */
-        .mix-container { width: 90%; max-width: 600px; margin-top: 20px; }
+        /* Glassmorphism Mix List */
+        .mix-list { margin-top: 40px; }
 
         .mix-card {
-            background: rgba(20, 20, 20, 0.8);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-left: 4px solid #00d4ff;
+            border-radius: 8px;
             padding: 20px; margin-bottom: 15px;
-            border-radius: 8px; display: flex; flex-direction: column;
+            text-align: left; transition: 0.3s;
         }
 
-        .mix-name { font-weight: bold; font-size: 18px; margin-bottom: 10px; color: #00d4ff; }
+        .mix-card:hover { background: rgba(0, 212, 255, 0.1); }
 
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg) brightness(1.5); height: 35px; }
+        .mix-title { font-size: 14px; font-weight: bold; color: #00d4ff; text-transform: uppercase; margin-bottom: 10px; }
 
-        /* Hidden Admin */
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg); height: 35px; }
+
+        /* Hidden Owner Panel - Stark White contrast */
         #admin-panel {
             display: none; position: fixed; bottom: 0; width: 100%;
-            background: rgba(0,0,0,0.9); border-top: 2px solid #00d4ff;
-            padding: 30px; text-align: center; z-index: 1000;
+            background: rgba(0, 0, 0, 0.95); border-top: 3px solid #00d4ff;
+            padding: 40px; text-align: center; z-index: 1000;
         }
 
-        button { background: #00d4ff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        .upload-btn {
+            background: #00d4ff; color: #000; border: none; padding: 15px 30px;
+            font-weight: bold; cursor: pointer; border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <h1 onclick="showLoginPrompt()">LEEONE</h1>
+    <div class="content">
+        <h1 onclick="showLoginPrompt()">LEEONE</h1>
+        
+        <div class="lion-icon"></div>
 
-    <div class="lion-icon">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 15C35 15 25 25 25 40V55H30V40C30 30 40 25 50 25C60 25 70 30 70 40V55H75V40C75 25 65 15 50 15Z" fill="#00d4ff"/>
-            <path d="M50 35C40 35 32 43 32 53C32 63 40 71 50 71C60 71 68 63 68 53C68 43 60 35 50 35ZM50 65C43 65 38 60 38 53C38 46 43 41 50 41C57 41 62 46 62 53C62 60 57 65 50 65Z" fill="#00d4ff"/>
-            <path d="M45 48H55V52H45V48Z" fill="#00d4ff"/>
-        </svg>
+        <div class="mix-list" id="mix-container">
+            </div>
     </div>
 
-    <div class="mix-container" id="mix-list">
-        </div>
-
     <div id="admin-panel">
-        <input type="file" id="fileItem">
-        <button onclick="uploadMix()">UPLOAD NEW MIX</button>
-        <button onclick="logout()" style="background:gray; margin-left:10px;">EXIT</button>
+        <h3 style="color:#00d4ff">OWNER SYSTEM ACCESS</h3>
+        <input type="file" id="fileItem" accept="audio/mpeg" style="margin-bottom: 20px; color: white;">
+        <br>
+        <button class="upload-btn" onclick="uploadMix()">PUSH MIX LIVE</button>
+        <button onclick="logout()" style="background:none; color:gray; border:none; margin-top:20px; cursor:pointer;">Logout</button>
+        <p id="status" style="color:#00d4ff"></p>
     </div>
 
     <script type="module">
-        // Paste your Firebase Config and Logic here
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        // PASTE YOUR KEYS FROM PHOTO #3 HERE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDR0uG4TB23Le05AKBGtnkYPhnHqXGuGuo",
+            authDomain: "leeone-e0087.firebaseapp.com",
+            projectId: "leeone-e0087",
+            storageBucket: "leeone-e0087.firebasestorage.app",
+            messagingSenderId: "375662424571",
+            appId: "1:375662424571:web:a6132af8b4056d9987db5e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+
+        // Security: Show/Hide the upload panel based on Login
+        onAuthStateChanged(auth, (user) => {
+            document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
+            loadMixes();
+        });
+
+        window.showLoginPrompt = async () => {
+            const email = prompt("Owner Email:");
+            const pass = prompt("Password:");
+            try { await signInWithEmailAndPassword(auth, email, pass); } 
+            catch (e) { alert("Access Denied."); }
+        };
+
+        window.logout = () => signOut(auth);
+
+        async function uploadMix() {
+            const file = document.getElementById('fileItem').files[0];
+            if(!file) return;
+            const status = document.getElementById('status');
+            status.innerText = "Uploading to warehouse...";
+            
+            const storageRef = ref(storage, 'mixes/' + file.name);
+            await uploadBytes(storageRef, file);
+            status.innerText = "Mix Live!";
+            loadMixes();
+        }
+
+        async function loadMixes() {
+            const container = document.getElementById('mix-container');
+            container.innerHTML = "";
+            const listRef = ref(storage, 'mixes/');
+            const res = await listAll(listRef);
+            
+            for (const item of res.items) {
+                const url = await getDownloadURL(item);
+                container.innerHTML += `
+                    <div class="mix-card">
+                        <div class="mix-title">${item.name.replace('.mp3', '')}</div>
+                        <audio controls src="${url}"></audio>
+                    </div>
+                `;
+            }
+        }
     </script>
 </body>
 </html>
