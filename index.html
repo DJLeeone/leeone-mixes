@@ -1,124 +1,130 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEEONE | Official Mixes</title>
+    <title>LEEONE</title>
     <style>
         :root { 
-            --gold: #d4af37; 
-            --glass: rgba(18, 18, 18, 0.85);
+            --electric-blue: #00d4ff; 
+            --glass: rgba(0, 0, 0, 0.8);
             --text: #ffffff; 
         }
 
         body { 
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            /* BACKGROUND IMAGE SETTINGS */
-            background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=2000'); 
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            margin: 0; padding: 0; background: #000; color: var(--text); font-family: 'Inter', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1514525253361-bee8718a74a2?q=80&w=2000'); 
+            background-attachment: fixed; background-size: cover; background-position: center;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* Dark Overlay to make image more subtle */
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Adjust this to make image darker/lighter */
-            z-index: -1;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%); z-index: -1;
         }
+
+        .header-section { text-align: center; margin: 80px 0 60px 0; }
 
         h1 { 
-            color: var(--gold); 
-            letter-spacing: 12px; 
-            margin-top: 60px;
-            font-size: 3.5rem;
-            font-weight: 200;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            color: var(--electric-blue); font-size: 4.5rem; letter-spacing: 15px; margin: 0;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.8); font-weight: 900; text-transform: uppercase;
         }
 
-        .tagline {
-            letter-spacing: 4px;
-            font-size: 0.7rem;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            opacity: 0.8;
+        .lion-logo {
+            width: 80px; height: auto; margin-top: 20px; filter: invert(1) drop-shadow(0 0 5px var(--electric-blue));
+            opacity: 0.9;
         }
         
-        #admin-panel { 
-            display: none; 
-            background: var(--glass); 
-            padding: 20px; 
-            border-radius: 10px; 
-            margin-bottom: 30px; 
-            border: 1px dashed var(--gold); 
-            backdrop-filter: blur(10px);
-        }
-        
-        .mix-list { 
-            width: 90%; 
-            max-width: 600px; 
-            margin-bottom: 50px;
-        }
+        .mix-list { width: 90%; max-width: 500px; padding-bottom: 150px; }
 
         .mix-item { 
-            background: var(--glass); 
-            margin-bottom: 20px; 
-            padding: 30px; 
-            border-radius: 4px; 
-            border-left: 3px solid var(--gold); 
-            display: flex; 
-            flex-direction: column;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--glass); margin-bottom: 20px; padding: 25px; 
+            border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 2px;
+            backdrop-filter: blur(20px); transition: 0.3s;
         }
 
-        .mix-name { 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            letter-spacing: 2px;
-            color: var(--gold);
-        }
-
-        audio { 
-            width: 100%; 
-            filter: invert(1) brightness(1.2); 
-        }
+        .mix-name { color: var(--electric-blue); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px; display: block; text-transform: uppercase; }
         
-        .admin-trigger { 
-            position: fixed; bottom: 10px; right: 10px; opacity: 0.05; cursor: pointer; color: white;
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg); opacity: 0.6; }
+        
+        /* Minimalist Admin */
+        #admin-panel { 
+            position: fixed; bottom: 0; background: rgba(0,0,0,0.9); width: 100%; 
+            padding: 20px; border-top: 1px solid #222; text-align: center; font-size: 0.7rem;
         }
+        input { background: #000; border: 1px solid #333; color: white; padding: 8px; margin: 5px; outline: none; }
+        button { background: var(--electric-blue); color: black; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <h1>LEEONE</h1>
-    <div class="tagline">Yerevan 🦁 Melodic & Deep</div>
-
-    <div id="admin-panel">
-        <input type="file" id="fileItem" accept="audio/*">
-        <button onclick="uploadMix()">Upload New Mix</button>
-        <p id="status"></p>
+    <div class="header-section">
+        <h1>LEEONE</h1>
+        <img src="https://img.icons8.com/ios-filled/100/FFFFFF/lion.png" class="lion-logo" alt="Lion">
     </div>
 
     <div class="mix-list" id="mix-container">
-        <p>Curating your experience...</p>
+        </div>
+
+    <div id="admin-panel">
+        <input type="password" id="adminPass" placeholder="PASS">
+        <input type="file" id="fileItem" accept="audio/mpeg">
+        <button onclick="uploadMix()">UPLOAD</button>
+        <span id="status" style="margin-left: 10px; color: var(--electric-blue);"></span>
     </div>
 
-    <div class="admin-trigger" onclick="showAdmin()">.</div>
-
     <script type="module">
-        // [PASTE YOUR FIREBASE CODE FROM PREVIOUS STEP HERE]
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        // PASTE YOUR FIREBASE CONFIG HERE
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "...",
+            appId: "..."
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+
+        async function loadMixes() {
+            const listRef = ref(storage, 'mixes/');
+            const container = document.getElementById('mix-container');
+            try {
+                const res = await listAll(listRef);
+                container.innerHTML = "";
+                // Sort by name or date if needed; Firebase listAll is usually alphabetical
+                for (const itemRef of res.items) {
+                    const url = await getDownloadURL(itemRef);
+                    const div = document.createElement('div');
+                    div.className = 'mix-item';
+                    div.innerHTML = `<span class="mix-name">${itemRef.name.replace('.mp3', '')}</span>
+                                     <audio controls src="${url}"></audio>`;
+                    container.appendChild(div);
+                }
+            } catch (e) { container.innerHTML = ""; }
+        }
+
+        window.uploadMix = async () => {
+            const pass = document.getElementById('adminPass').value;
+            if (pass !== '1234') { alert('Denied'); return; }
+            
+            const file = document.getElementById('fileItem').files[0];
+            const status = document.getElementById('status');
+            if (!file) return;
+
+            status.innerText = "UPLOADING...";
+            const storageRef = ref(storage, 'mixes/' + file.name);
+            await uploadBytes(storageRef, file);
+            status.innerText = "DONE.";
+            loadMixes();
+        };
+        
+        loadMixes();
     </script>
 </body>
 </html>
