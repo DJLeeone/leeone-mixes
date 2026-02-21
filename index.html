@@ -1,160 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEEONE | OFFICIAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0; padding: 0; background: #000; color: #fff;
-            font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
-        }
-
-        /* Background: Club Lights & Crowd Shadows */
-        .club-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                url('https://www.transparenttextures.com/patterns/asfalt-dark.png'),
-                radial-gradient(circle at 10% 10%, rgba(0, 212, 255, 0.3) 0%, transparent 40%),
-                radial-gradient(circle at 90% 10%, rgba(145, 0, 255, 0.3) 0%, transparent 40%),
-                url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2000'); /* Crowd shadows photo */
-            background-size: cover; background-position: center bottom;
-            filter: brightness(0.4) contrast(1.2); z-index: -1;
-        }
-
-        /* Neon Laser Lines */
-        .laser-cyan { position: fixed; top: 30%; left: -10%; width: 50%; height: 2px; background: #00eaff; box-shadow: 0 0 20px #00eaff; transform: rotate(-15deg); opacity: 0.6; }
-        .laser-purple { position: fixed; top: 30%; right: -10%; width: 50%; height: 2px; background: #9100ff; box-shadow: 0 0 20px #9100ff; transform: rotate(15deg); opacity: 0.6; }
-
-        /* Hollow Neon Title */
-        h1 {
-            font-family: 'Orbitron', sans-serif; font-size: clamp(60px, 12vw, 100px);
-            font-style: italic; margin: 80px 0 20px 0; color: transparent;
-            -webkit-text-stroke: 2px #00eaff; filter: drop-shadow(0 0 15px #00eaff);
-            text-transform: uppercase; cursor: pointer; z-index: 2;
-        }
-
-        /* Detailed Lion Headset Logo */
-        .lion-logo {
-            width: 220px; height: 220px; margin-bottom: 50px;
-            background: url('https://i.ibb.co/3ykpXfH/lion-headset.png') no-repeat center;
-            background-size: contain; filter: drop-shadow(0 0 20px #00eaff);
-            z-index: 2;
-        }
-
-        /* Mix Grid Layout */
-        .mix-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px; width: 90%; max-width: 1000px; margin-bottom: 150px; z-index: 2;
-        }
-
-        .mix-card {
-            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 212, 255, 0.3); border-left: 6px solid #00eaff;
-            padding: 25px; border-radius: 4px; transition: 0.3s;
-        }
-
-        .mix-title { color: #00eaff; font-weight: bold; text-transform: uppercase; font-size: 18px; margin-bottom: 12px; }
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg); height: 35px; }
-
-        /* Admin Section */
-        #admin-panel {
-            display: none; position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95);
-            border-top: 4px solid #00eaff; padding: 50px; text-align: center; z-index: 1000;
-        }
-        .upload-btn { background: #00eaff; color: #000; border: none; padding: 15px 50px; font-weight: bold; cursor: pointer; text-transform: uppercase; border-radius: 4px; }
-    </style>
-</head>
-<body>
-
-    <div class="club-bg"></div>
-    <div class="laser-cyan"></div>
-    <div class="laser-purple"></div>
-
-    <h1 onclick="showLoginPrompt()">LEEONE</h1>
-
-    <div class="lion-logo"></div>
-
-    <div class="mix-grid" id="mix-container">
-        </div>
-
-    <div id="admin-panel">
-        <h2 style="color:#00eaff; margin-bottom:30px;">#ADMIN-PANEL</h2>
-        <input type="file" id="fileItem" style="color:white; margin-bottom:30px;">
-        <br>
-        <button class="upload-btn" onclick="uploadMix()">Confirm Upload</button>
-        <button onclick="logout()" style="background:none; border:none; color:#555; text-decoration:underline; cursor:pointer; margin-left:20px;">Logout</button>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        // Your Firebase Keys
-        // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDROuG4TB23LeD5AKBGtnkYPHnHqXGuGuo",
-  authDomain: "leeone-e0087.firebaseapp.com",
-  projectId: "leeone-e0087",
-  storageBucket: "leeone-e0087.firebasestorage.app",
-  messagingSenderId: "375662424571",
-  appId: "1:375662424571:web:a6132af0b4056d9907db5e",
-  measurementId: "G-KG2SDPQZYJ"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+        const firebaseConfig = {
+            apiKey: "AIzaSyDROuG4TB23LeD5AKBGtnkYPHnHqXGuGuo",
+            authDomain: "leeone-e0087.firebaseapp.com",
+            projectId: "leeone-e0087",
+            storageBucket: "leeone-e0087.firebasestorage.app",
+            messagingSenderId: "375662424571",
+            appId: "1:375662424571:web:a6132af8b4056d9907db5e",
+            measurementId: "G-KG2SDPQZYJ"
         };
 
+        // Initialize Firebase services correctly
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
 
+        // Security: Monitor login status
         onAuthStateChanged(auth, (user) => {
             document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
             loadMixes();
         });
 
+        // Triggered by clicking the "LEEONE" name
         window.showLoginPrompt = async () => {
-            const email = prompt("Email:");
+            const email = prompt("Owner Email:");
             const pass = prompt("Password:");
-            try { await signInWithEmailAndPassword(auth, email, pass); } catch(e) { alert("Access Denied"); }
+            if (email && pass) {
+                try { 
+                    await signInWithEmailAndPassword(auth, email, pass); 
+                } catch(e) { 
+                    alert("Access Denied: Check credentials in Firebase Console."); 
+                }
+            }
         };
 
         window.logout = () => signOut(auth);
 
-        async function uploadMix() {
+        window.uploadMix = async () => {
             const file = document.getElementById('fileItem').files[0];
-            if(!file) return;
+            if(!file) return alert("Select a file first");
+            
             const storageRef = ref(storage, 'mixes/' + file.name);
-            await uploadBytes(storageRef, file);
-            alert("Uploaded!");
-            loadMixes();
-        }
+            try {
+                await uploadBytes(storageRef, file);
+                alert("Mix uploaded successfully!");
+                loadMixes();
+            } catch(e) {
+                alert("Upload failed. Ensure Storage rules allow writes for authenticated users.");
+            }
+        };
 
         async function loadMixes() {
             const container = document.getElementById('mix-container');
-            container.innerHTML = "";
-            const listRef = ref(storage, 'mixes/');
-            const res = await listAll(listRef);
-            for (const item of res.items) {
-                const url = await getDownloadURL(item);
-                container.innerHTML += `
-                    <div class="mix-card">
-                        <div class="mix-title">${item.name.split('.')[0]}</div>
-                        <audio controls src="${url}"></audio>
-                    </div>
-                `;
+            container.innerHTML = "Loading sets...";
+            try {
+                const listRef = ref(storage, 'mixes/');
+                const res = await listAll(listRef);
+                container.innerHTML = "";
+                for (const item of res.items) {
+                    const url = await getDownloadURL(item);
+                    container.innerHTML += `
+                        <div class="mix-card">
+                            <div class="mix-title">${item.name.split('.')[0]}</div>
+                            <audio controls src="${url}"></audio>
+                        </div>
+                    `;
+                }
+            } catch(e) {
+                container.innerHTML = "No mixes found or access denied.";
             }
         }
-    </script>
-</body>
-</html>
