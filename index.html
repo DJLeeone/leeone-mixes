@@ -3,93 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEEONE</title>
+    <title>LEEONE | OFFICIAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0; padding: 0; background: #000; color: #fff;
             font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; min-height: 100vh;
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        /* Intense Club Lighting Effect */
-        .club-lights {
+        /* Background: Club Lights & Crowd Shadows */
+        .club-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(145, 0, 255, 0.15) 0%, transparent 50%);
-            z-index: -1; pointer-events: none;
+                url('https://www.transparenttextures.com/patterns/asfalt-dark.png'),
+                radial-gradient(circle at 10% 10%, rgba(0, 212, 255, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(145, 0, 255, 0.3) 0%, transparent 40%),
+                url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2000'); /* Crowd shadows photo */
+            background-size: cover; background-position: center bottom;
+            filter: brightness(0.4) contrast(1.2); z-index: -1;
         }
 
-        .laser {
-            position: fixed; top: 40%; left: -50%; width: 200%; height: 2px;
-            background: #00eaff; box-shadow: 0 0 20px #00eaff;
-            transform: rotate(-5deg); opacity: 0.3; z-index: -1;
-        }
+        /* Neon Laser Lines */
+        .laser-cyan { position: fixed; top: 30%; left: -10%; width: 50%; height: 2px; background: #00eaff; box-shadow: 0 0 20px #00eaff; transform: rotate(-15deg); opacity: 0.6; }
+        .laser-purple { position: fixed; top: 30%; right: -10%; width: 50%; height: 2px; background: #9100ff; box-shadow: 0 0 20px #9100ff; transform: rotate(15deg); opacity: 0.6; }
 
-        /* The Hollow Neon Name */
+        /* Hollow Neon Title */
         h1 {
-            font-family: 'Orbitron', sans-serif; font-size: clamp(60px, 12vw, 110px);
-            font-style: italic; margin: 60px 0 20px 0; color: transparent;
+            font-family: 'Orbitron', sans-serif; font-size: clamp(60px, 12vw, 100px);
+            font-style: italic; margin: 80px 0 20px 0; color: transparent;
             -webkit-text-stroke: 2px #00eaff; filter: drop-shadow(0 0 15px #00eaff);
-            text-transform: uppercase; cursor: pointer;
+            text-transform: uppercase; cursor: pointer; z-index: 2;
         }
 
-        /* Lion + Headset (Built-in SVG to avoid "Not Found" errors) */
-        .logo-container { width: 180px; height: 180px; margin-bottom: 40px; filter: drop-shadow(0 0 10px #00eaff); }
+        /* Detailed Lion Headset Logo */
+        .lion-logo {
+            width: 220px; height: 220px; margin-bottom: 50px;
+            background: url('https://i.ibb.co/3ykpXfH/lion-headset.png') no-repeat center;
+            background-size: contain; filter: drop-shadow(0 0 20px #00eaff);
+            z-index: 2;
+        }
 
-        /* Mix Grid Layout (2 Columns) */
+        /* Mix Grid Layout */
         .mix-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px; width: 90%; max-width: 900px; margin-bottom: 100px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px; width: 90%; max-width: 1000px; margin-bottom: 150px; z-index: 2;
         }
 
         .mix-card {
-            background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 212, 255, 0.2); border-left: 5px solid #00eaff;
-            padding: 20px; border-radius: 4px; transition: 0.3s;
+            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 212, 255, 0.3); border-left: 6px solid #00eaff;
+            padding: 25px; border-radius: 4px; transition: 0.3s;
         }
-        .mix-card:hover { border-color: #00eaff; transform: translateY(-3px); }
 
-        .mix-title { color: #00eaff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-        audio { width: 100%; filter: invert(1) hue-rotate(180deg); height: 30px; }
+        .mix-title { color: #00eaff; font-weight: bold; text-transform: uppercase; font-size: 18px; margin-bottom: 12px; }
+        audio { width: 100%; filter: invert(1) hue-rotate(180deg); height: 35px; }
 
-        /* Admin/Upload Section */
+        /* Admin Section */
         #admin-panel {
-            display: none; position: fixed; bottom: 0; width: 100%; background: #000;
-            border-top: 3px solid #00eaff; padding: 40px; box-sizing: border-box; text-align: center;
+            display: none; position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95);
+            border-top: 4px solid #00eaff; padding: 50px; text-align: center; z-index: 1000;
         }
-        .btn-upload {
-            background: #00eaff; color: #000; border: none; padding: 12px 40px;
-            font-weight: bold; border-radius: 4px; cursor: pointer; text-transform: uppercase;
-        }
+        .upload-btn { background: #00eaff; color: #000; border: none; padding: 15px 50px; font-weight: bold; cursor: pointer; text-transform: uppercase; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <div class="club-lights"></div>
-    <div class="laser"></div>
+    <div class="club-bg"></div>
+    <div class="laser-cyan"></div>
+    <div class="laser-purple"></div>
 
     <h1 onclick="showLoginPrompt()">LEEONE</h1>
 
-    <div class="logo-container">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="55" r="8" stroke="#00eaff" stroke-width="2"/>
-            <circle cx="80" cy="55" r="8" stroke="#00eaff" stroke-width="2"/>
-            <path d="M20 55C20 30 35 15 50 15C65 15 80 30 80 55" stroke="#00eaff" stroke-width="3"/>
-            <path d="M50 35C42 35 35 42 35 50C35 55 38 60 42 63V75L50 70L58 75V63C62 60 65 55 65 50C65 42 58 35 50 35Z" fill="#00eaff"/>
-        </svg>
-    </div>
+    <div class="lion-logo"></div>
 
     <div class="mix-grid" id="mix-container">
         </div>
 
     <div id="admin-panel">
-        <p style="color:#00eaff; font-weight:bold; margin-bottom:20px;">SYSTEM UPLOAD MODE</p>
-        <input type="file" id="fileItem" style="color:white; margin-bottom:20px;">
+        <h2 style="color:#00eaff; margin-bottom:30px;">#ADMIN-PANEL</h2>
+        <input type="file" id="fileItem" style="color:white; margin-bottom:30px;">
         <br>
-        <button class="btn-upload" onclick="uploadMix()">Confirm Upload</button>
-        <button onclick="logout()" style="background:none; border:none; color:#666; text-decoration:underline; cursor:pointer; margin-left:20px;">Exit</button>
+        <button class="upload-btn" onclick="uploadMix()">Confirm Upload</button>
+        <button onclick="logout()" style="background:none; border:none; color:#555; text-decoration:underline; cursor:pointer; margin-left:20px;">Logout</button>
     </div>
 
     <script type="module">
@@ -97,7 +93,7 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        // Your real keys from your setup photo
+        // Your Firebase Keys
         const firebaseConfig = {
             apiKey: "AIzaSyDR0uG4TB23Le05AKBGtnkYPhnHqXGuGuo",
             authDomain: "leeone-e0087.firebaseapp.com",
@@ -129,7 +125,7 @@
             if(!file) return;
             const storageRef = ref(storage, 'mixes/' + file.name);
             await uploadBytes(storageRef, file);
-            alert("Upload successful!");
+            alert("Uploaded!");
             loadMixes();
         }
 
