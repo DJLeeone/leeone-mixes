@@ -3,100 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEEONE | OFFICIAL</title>
+    <title>LEEONE | OFFICIAL VAULT</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .logo { font-size: 3rem; font-weight: bold; color: #00f2ff; cursor: pointer; text-shadow: 0 0 10px #00f2ff; }
-        #admin-panel { display: none; background: #111; padding: 20px; margin-top: 20px; border: 1px solid #00f2ff; }
-        .mix-card { background: #222; margin: 10px auto; padding: 15px; max-width: 400px; border-radius: 8px; }
-        audio { width: 100%; margin-top: 10px; }
-        button { background: #00f2ff; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        body { 
+            background: #000; color: #00f2ff; font-family: 'Courier New', monospace; 
+            text-align: center; padding: 50px 10px; margin: 0;
+        }
+        .logo { 
+            font-size: 60px; font-weight: 900; letter-spacing: 10px;
+            text-shadow: 0 0 20px #00f2ff; margin-bottom: 10px; 
+        }
+        .tagline { font-size: 12px; letter-spacing: 3px; margin-bottom: 40px; color: #555; }
+        
+        .vault-container {
+            max-width: 900px; margin: 0 auto;
+            border: 1px solid #00f2ff; background: rgba(0, 242, 255, 0.05);
+            padding: 5px; border-radius: 2px; box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
+        }
+
+        /* This styles the Google Drive folder to look like a dark-mode DJ tool */
+        iframe { 
+            width: 100%; height: 600px; border: none; 
+            filter: invert(0.92) hue-rotate(180deg) brightness(1.1); 
+        }
+
+        .footer { margin-top: 30px; font-size: 10px; color: #333; }
     </style>
 </head>
 <body>
 
-    <div class="logo" onclick="showLoginPrompt()">LEEONE</div>
-    <p>Exclusive Mixes & Sets</p>
-
-    <div id="mix-container">Loading mixes...</div>
-
-    <div id="admin-panel">
-        <h3>Admin Control</h3>
-        <input type="file" id="fileItem">
-        <button onclick="uploadMix()">UPLOAD MIX</button>
-        <button onclick="logout()" style="background:red; color:white;">LOGOUT</button>
+    <div class="logo">LEEONE</div>
+    <div class="tagline">ARCHIVE // HYBRID SETS // 2026</div>
+    
+    <div class="vault-container">
+        <iframe src="https://drive.google.com/embeddedfolderview?id=1wwLOciM_glo60nlUIOZ2LjMVvWS9cye_#list"></iframe>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    <div class="footer">ENCRYPTION: ACTIVE // SOURCE: CLOUD_DRIVE</div>
 
-        const firebaseConfig = {
-            apiKey: "AlzaSyDROuG4TB23LeD5AKBGtnkYPHnHqXGuGuo",
-            authDomain: "leeone-e0087.firebaseapp.com",
-            projectId: "leeone-e0087",
-            storageBucket: "leeone-e0087.firebasestorage.app",
-            messagingSenderId: "375662424571",
-            appId: "1:375662424571:web:a6132af8b4056d9907db5e",
-            measurementId: "G-KG2SDPQZYJ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const storage = getStorage(app);
-
-        onAuthStateChanged(auth, (user) => {
-            document.getElementById('admin-panel').style.display = user ? 'block' : 'none';
-            loadMixes();
-        });
-
-        window.showLoginPrompt = async () => {
-            const email = prompt("Owner Email:");
-            const pass = prompt("Password:");
-            if (email && pass) {
-                try {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                } catch (e) {
-                    alert("Login failed. Check your Firebase email/password.");
-                }
-            }
-        };
-
-        window.logout = () => signOut(auth);
-
-        window.uploadMix = async () => {
-            const file = document.getElementById('fileItem').files[0];
-            if(!file) return alert("Select a file first");
-            const storageRef = ref(storage, 'mixes/' + file.name);
-            try {
-                await uploadBytes(storageRef, file);
-                alert("Mix uploaded successfully!");
-                loadMixes();
-            } catch(e) {
-                alert("Upload failed. Make sure you are logged in and Storage rules are set.");
-            }
-        };
-
-        async function loadMixes() {
-            const container = document.getElementById('mix-container');
-            container.innerHTML = "Fetching sets...";
-            try {
-                const listRef = ref(storage, 'mixes/');
-                const res = await listAll(listRef);
-                container.innerHTML = res.items.length === 0 ? "No mixes found." : "";
-                for (const item of res.items) {
-                    const url = await getDownloadURL(item);
-                    container.innerHTML += `
-                        <div class="mix-card">
-                            <p>${item.name.split('.')[0]}</p>
-                            <audio controls src="${url}"></audio>
-                        </div>`;
-                }
-            } catch(e) {
-                container.innerHTML = "Error loading mixes. Check Firebase Storage rules.";
-            }
-        }
-    </script>
 </body>
 </html>
